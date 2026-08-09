@@ -26,3 +26,30 @@ def display_menu():
     print("=" * 30)
     
     
+def main():
+    """Main Program excution loop."""
+    running = True
+    
+    while running:
+        display_menu()
+        choice = input("Select an option (1-5): ").strip()
+        
+        if choice == "1":
+            print("\n[Feature coming soon: Record Offence]")
+        elif choice == "2":
+            print("\n[Feature coming soon: View Offences]")
+        elif choice == "3":
+            print("\n[Feature coming soon: Search Records]")
+        elif choice == "4":
+            print("\n[Feature coming soon: Patrol Summary]")
+        elif choice == "5":
+            print("\n[Exiting PIMS.: Stay safe!]")
+            running = false
+        else:
+            print("\nInvalid Choice. Please select a number between 1 and 5.")
+            
+if __name__ == "__main__":
+    main()
+            
+    
+    
