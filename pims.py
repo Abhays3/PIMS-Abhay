@@ -43,6 +43,66 @@ def check_warrant(driver_name):
             return True
         return False
 
+def validate_licence(licence):
+    """
+    Validates driver licence format format: 2 letters followed by 6 digits
+    Returns True if valid, False otherwise
+    
+    """
+    if len(licence) != 8:
+        return False
+    
+    letters = licence[:2]
+    digits = licence[2:]
+    
+    return letters.isalpha and digits.isdigit()
+
+def record_offence():
+    """
+    Collects, validates, and stores a new speeding offence record.
+    
+    """
+    print("\n--- Record Speeding Offence ---")
+    
+    # 1. Driver Name Validation
+    while True:
+        name = input("Enter driver's full name: ").strip().title()
+        if len(name) > 0:
+            break
+        print("Error Driver name cannot be empty.")
+    
+    # 2. Driver Licence Validation
+    while True:
+        licence = input("Enter licence number: ").strip().upper()
+        if validate_licence(licence):
+            break
+        print("Error: Licence must be 2 letters followed by 6 digits")
+        
+    #3. Posted Speed limit Validation
+    while True:
+        limit_input = input("Enter posted speed limit (30 - 11- km/h): ").strip()
+        if limit_input.isdigit():
+            limit = int(limit_input)
+            if 30 <= limit <= 110:
+                break
+            print("Error: Speed limit must be between 30 and 110 km/h.")
+        else:
+            print("Error: Please enter a valid numeric speed limit.")
+            
+    #4. Recorded Speed Validation
+    while True:
+        speed_input = input("Enter recorded speed (km/h): ").strip()
+        if speed_input.isdigit():
+            speed = int(speed_input)
+            if speed > limit:
+                break
+            else:
+                print(f"No speeding offene occurred! Recorded speed ({speed}) is not above limit ({limit}).")
+        else:
+            print("Error: Please enter a valid numeric speed.")
+                
+    
+
 
 def display_menu():
     """Displays the main menu options for the officer."""
