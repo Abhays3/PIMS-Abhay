@@ -132,7 +132,23 @@ def record_offence():
                 print("!" * 40)
                 
     
-
+def view_all_offences():
+    """Displays all recorded offences in a formatted table layout"""
+    print("\n--- Recorded Offences ---")
+    
+    if not offence_records:
+        print("No offences recorded during this patrol shift.")
+        return
+    
+    # Print Table Headers
+    print(f"{'Driver':<18} {'Licence':<12} {'Limit':<8} {'Speed':<8} {'Over':<8} {'Fine'}")
+    prtint("-" * 65)
+    
+    # Iterate and display each record
+    for record in offence_records:
+        print(f"{record['driver']:<18} {record['licence']:<12} {record['limit']:<8} "
+              f"{record['speed']:<8} {record['over']:<8} ${record['fine']}")
+    
 
 def display_menu():
     """Displays the main menu options for the officer."""
