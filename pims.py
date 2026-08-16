@@ -99,7 +99,37 @@ def record_offence():
             else:
                 print(f"No speeding offene occurred! Recorded speed ({speed}) is not above limit ({limit}).")
         else:
-            print("Error: Please enter a valid numeric speed.")
+            print("Error: Please enter a valid speed.")
+            
+            # Calculate Speed Over & Fine Amount
+            speed_over = speed - limit
+            fine = calculate_fine(speed_over)
+            
+            # Store record as a dictionary in our multidimensional lisr
+            record = {
+                "driver": name,
+                "licence": licence,
+                "limit": limit,
+                "speed": speed,
+                "over": speed_over,
+                "fine": fine
+                
+            }
+            
+            offence_records.append(record)
+            
+            # Output fine details
+            print("\n--- OFFENCE RECORDED ---")
+            print(f"Driver: {name} Licence: {licence}")
+            print(f"speed over limit: {speed_over} km/h")
+            print(f"Calculated Fine: ${fine}")
+            
+            # Automated Warrant Check
+            if check_warrant(name):
+                print("\n" + "!" * 40)
+                print(f" WARNING: {name.upper()} IS ON THE WANTED LIST!")
+                print("  PLEASE TAKE POLICE ACTION.")
+                print("!" * 40)
                 
     
 
