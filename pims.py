@@ -149,6 +149,32 @@ def view_all_offences():
         print(f"{record['driver']:<18} {record['licence']:<12} {record['limit']:<8} "
               f"{record['speed']:<8} {record['over']:<8} ${record['fine']}")
     
+def search_offences():
+    """Searches for offence records using driver full name or licence number."""
+    print("\n--- Search Offence Records ---")
+    
+    if not offence_records:
+        print("No offences recorded to search.")
+        return
+    
+    search_query = input("Enter driver's full name or licence number: ").strip().lower()
+    matches = []
+    
+    # Search algorithm checking name or licence
+    for record in offence_records:
+        if search_query == record['driver'].lower() or search_query == record['licence'].lower():
+            matches.append(record)
+            
+    if matches:
+        print(f"\nFound {len(matches)} matching record(s):")
+        print(f"{'Driver':<18} {'Licence':<12} {'Limit':<8} {'Speed':<8} {'Over':<8} {'Fine'}")
+        print("-" * 65)
+        for record in matches:
+            print(f"{record['driver']:<18} {record['licence']:<12} {record['limit']:<8} "
+                  f"{record['speed']:<8} {record['over']:<8} ${record['fine']}")
+            
+    else:
+        print(f"No matching records found for query: '{search_query}'")
 
 def display_menu():
     """Displays the main menu options for the officer."""
