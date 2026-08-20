@@ -7,22 +7,21 @@ WANTED_LIST = [
     "Super Man",
     "Tony Stark",
     "Shawn Jonathan"
-    
 ]
 
-#list collection to store all recorded offence dictionaries
+# List collection to store all recorded offence dictionaries
 offence_records = []
+
 
 def calculate_fine(speed_over):
     """
-    calculates fine amount based on speed over limit.
-    parameters: speed_over (int)
+    Calculates fine amount based on speed over limit.
+    Parameters: speed_over (int)
     Returns: fine amount in dollars (int)
-    
     """
-    if 1 <= speed_over<= 10:
+    if 1 <= speed_over <= 10:
         return 30
-    elif 11 <= speed_over<= 20:
+    elif 11 <= speed_over <= 20:
         return 80
     elif 21 <= speed_over <= 30:
         return 170
@@ -30,24 +29,24 @@ def calculate_fine(speed_over):
         return 400
     else:
         return 630
-    
+
+
 def check_warrant(driver_name):
     """
     Checks if driver name is on wanted list (case-insensitive).
-    parameters: driver_name (str)
-    Returns: True if wantede, False otherwise
-    
+    Parameters: driver_name (str)
+    Returns: True if wanted, False otherwise
     """
     for wanted_person in WANTED_LIST:
         if driver_name.lower() == wanted_person.lower():
             return True
-        return False
+    return False
+
 
 def validate_licence(licence):
     """
-    Validates driver licence format format: 2 letters followed by 6 digits
+    Validates driver licence format: 2 letters followed by 6 digits
     Returns True if valid, False otherwise
-    
     """
     if len(licence) != 8:
         return False
@@ -55,13 +54,11 @@ def validate_licence(licence):
     letters = licence[:2]
     digits = licence[2:]
     
-    return letters.isalpha and digits.isdigit()
+    return letters.isalpha() and digits.isdigit()
+
 
 def record_offence():
-    """
-    Collects, validates, and stores a new speeding offence record.
-    
-    """
+    """Collects, validates, and stores a new speeding offence record."""
     print("\n--- Record Speeding Offence ---")
     
     # 1. Driver Name Validation
@@ -69,18 +66,18 @@ def record_offence():
         name = input("Enter driver's full name: ").strip().title()
         if len(name) > 0:
             break
-        print("Error Driver name cannot be empty.")
+        print("Error: Driver name cannot be empty.")
     
     # 2. Driver Licence Validation
     while True:
         licence = input("Enter licence number: ").strip().upper()
         if validate_licence(licence):
             break
-        print("Error: Licence must be 2 letters followed by 6 digits")
+        print("Error: Licence must be 2 letters followed by 6 digits.")
         
-    #3. Posted Speed limit Validation
+    # 3. Posted Speed Limit Validation
     while True:
-        limit_input = input("Enter posted speed limit (30 - 11- km/h): ").strip()
+        limit_input = input("Enter posted speed limit (30 - 110 km/h): ").strip()
         if limit_input.isdigit():
             limit = int(limit_input)
             if 30 <= limit <= 110:
@@ -89,7 +86,7 @@ def record_offence():
         else:
             print("Error: Please enter a valid numeric speed limit.")
             
-    #4. Recorded Speed Validation
+    # 4. Recorded Speed Validation
     while True:
         speed_input = input("Enter recorded speed (km/h): ").strip()
         if speed_input.isdigit():
@@ -97,43 +94,43 @@ def record_offence():
             if speed > limit:
                 break
             else:
-                print(f"No speeding offene occurred! Recorded speed ({speed}) is not above limit ({limit}).")
+                print(f"No speeding offence occurred! Recorded speed ({speed}) is not above limit ({limit}).")
+                return
         else:
             print("Error: Please enter a valid speed.")
             
-            # Calculate Speed Over & Fine Amount
-            speed_over = speed - limit
-            fine = calculate_fine(speed_over)
-            
-            # Store record as a dictionary in our multidimensional lisr
-            record = {
-                "driver": name,
-                "licence": licence,
-                "limit": limit,
-                "speed": speed,
-                "over": speed_over,
-                "fine": fine
-                
-            }
-            
-            offence_records.append(record)
-            
-            # Output fine details
-            print("\n--- OFFENCE RECORDED ---")
-            print(f"Driver: {name} Licence: {licence}")
-            print(f"speed over limit: {speed_over} km/h")
-            print(f"Calculated Fine: ${fine}")
-            
-            # Automated Warrant Check
-            if check_warrant(name):
-                print("\n" + "!" * 40)
-                print(f" WARNING: {name.upper()} IS ON THE WANTED LIST!")
-                print("  PLEASE TAKE POLICE ACTION.")
-                print("!" * 40)
-                
+    # Calculate Speed Over & Fine Amount
+    speed_over = speed - limit
+    fine = calculate_fine(speed_over)
     
+    # Store record as a dictionary in our list
+    record = {
+        "driver": name,
+        "licence": licence,
+        "limit": limit,
+        "speed": speed,
+        "over": speed_over,
+        "fine": fine
+    }
+    
+    offence_records.append(record)
+    
+    # Output fine details
+    print("\n--- OFFENCE RECORDED ---")
+    print(f"Driver: {name} | Licence: {licence}")
+    print(f"Speed over limit: {speed_over} km/h")
+    print(f"Calculated Fine: ${fine}")
+    
+    # Automated Warrant Check
+    if check_warrant(name):
+        print("\n" + "!" * 40)
+        print(f" WARNING: {name.upper()} IS ON THE WANTED LIST!")
+        print("  PLEASE TAKE POLICE ACTION.")
+        print("!" * 40)
+
+
 def view_all_offences():
-    """Displays all recorded offences in a formatted table layout"""
+    """Displays all recorded offences in a formatted table layout."""
     print("\n--- Recorded Offences ---")
     
     if not offence_records:
@@ -142,13 +139,14 @@ def view_all_offences():
     
     # Print Table Headers
     print(f"{'Driver':<18} {'Licence':<12} {'Limit':<8} {'Speed':<8} {'Over':<8} {'Fine'}")
-    prtint("-" * 65)
+    print("-" * 65)
     
     # Iterate and display each record
     for record in offence_records:
         print(f"{record['driver']:<18} {record['licence']:<12} {record['limit']:<8} "
               f"{record['speed']:<8} {record['over']:<8} ${record['fine']}")
-    
+
+
 def search_offences():
     """Searches for offence records using driver full name or licence number."""
     print("\n--- Search Offence Records ---")
@@ -172,28 +170,13 @@ def search_offences():
         for record in matches:
             print(f"{record['driver']:<18} {record['licence']:<12} {record['limit']:<8} "
                   f"{record['speed']:<8} {record['over']:<8} ${record['fine']}")
-            
     else:
         print(f"No matching records found for query: '{search_query}'")
+
 
 def display_summary():
     """Displays shift statistics: total offences, total fines, average speed over limit, highest offence."""
     print("\n--- PATROL SUMMARY ---")
-    
-    if not offence_records:
-        print("No offences recorded during this shift.")
-        return
-    
-    totsl_offences = len(offence_records)
-    total_fines = sum(record['fine'] for record in offence_records)
-    
-    # Calculate nAverage Speed Over Limit
-    total_over = sum(record['over'] for record in offence_records)
-
-
-def display_summary():
-    """Displays shift statistics: total offences, total fines, average speed over limit, highest offence."""
-    print("\n--- PAROL SUMMaRY ---")
     
     if not offence_records:
         print("No offences recorded during this shift.")
@@ -212,16 +195,16 @@ def display_summary():
         if record['over'] > highest_record['over']:
             highest_record = record
             
-    print(f"Total offences:       {total_offences}")
-    print(f"Total fines issued:   ${total_fines:,}")
-    print(f"Average speed over limit:        {avg_over} km\h")
-    print(f"Highest offence:        {highest_record['driver']}  ({highest_record['over']} km/h over)")
+    print(f"Total offences:           {total_offences}")
+    print(f"Total fines issued:       ${total_fines:,}")
+    print(f"Average speed over limit: {avg_over} km/h")
+    print(f"Highest offence:          {highest_record['driver']} ({highest_record['over']} km/h over)")
 
 
 def display_menu():
     """Displays the main menu options for the officer."""
     print("\n" + "=" * 30)
-    print("     Police Patrol System    ")
+    print("    Police Patrol System    ")
     print("=" * 30)
     print("1. Record a speeding offence")
     print("2. View all recorded offences")
@@ -229,10 +212,10 @@ def display_menu():
     print("4. Display patrol summary")
     print("5. Exit program")
     print("=" * 30)
-    
-    
+
+
 def main():
-    """Main Program excution loop."""
+    """Main Program execution loop."""
     running = True
     
     while running:
@@ -240,21 +223,19 @@ def main():
         choice = input("Select an option (1-5): ").strip()
         
         if choice == "1":
-            print("\n[Feature coming soon: Record Offence]")
+            record_offence()
         elif choice == "2":
-            print("\n[Feature coming soon: View Offences]")
+            view_all_offences()
         elif choice == "3":
-            print("\n[Feature coming soon: Search Records]")
+            search_offences()
         elif choice == "4":
-            print("\n[Feature coming soon: Patrol Summary]")
+            display_summary()
         elif choice == "5":
-            print("\n[Exiting PIMS.: Stay safe!]")
-            running = false
+            print("\nExiting PIMS. Stay safe!")
+            running = False
         else:
-            print("\nInvalid Choice. Please select a number between 1 and 5.")
-            
+            print("\nInvalid choice. Please select a number between 1 and 5.")
+
+
 if __name__ == "__main__":
     main()
-            
-    
-    
