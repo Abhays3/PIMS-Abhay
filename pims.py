@@ -1,6 +1,8 @@
 # Patrol Car Infringement Management System (PIMS)
 
 
+
+# Global list of wanted individuals (case-insensitive checks are used later on)
 WANTED_LIST = [
     "Abhay Singh",
     "Spider Man",
@@ -38,6 +40,7 @@ def check_warrant(driver_name):
     Returns: True if wanted, False otherwise
     """
     for wanted_person in WANTED_LIST:
+        # Compare lowercase verisons to avoid case sensitivity issues
         if driver_name.lower() == wanted_person.lower():
             return True
     return False
@@ -48,12 +51,15 @@ def validate_licence(licence):
     Validates driver licence format: 2 letters followed by 6 digits
     Returns True if valid, False otherwise
     """
+    # Check total length must be exaclty 8 characters
     if len(licence) != 8:
         return False
     
+    # Split the string into letters (first 2) and digits (remaining 6)
     letters = licence[:2]
     digits = licence[2:]
     
+    # Ensure first part is alphabetic and second part is numeric
     return letters.isalpha() and digits.isdigit()
 
 
@@ -91,6 +97,7 @@ def record_offence():
         speed_input = input("Enter recorded speed (km/h): ").strip()
         if speed_input.isdigit():
             speed = int(speed_input)
+            # Ensure recorded speed is actually higher than the limit
             if speed > limit:
                 break
             else:
@@ -103,7 +110,7 @@ def record_offence():
     speed_over = speed - limit
     fine = calculate_fine(speed_over)
     
-    # Store record as a dictionary in our list
+    # Store record as a dictionary in our list collection
     record = {
         "driver": name,
         "licence": licence,
@@ -113,9 +120,10 @@ def record_offence():
         "fine": fine
     }
     
+    # Append the dictionary to the global records list
     offence_records.append(record)
     
-    # Output fine details
+    # Output individual offence deatils to the officer
     print("\n--- OFFENCE RECORDED ---")
     print(f"Driver: {name} | Licence: {licence}")
     print(f"Speed over limit: {speed_over} km/h")
@@ -133,11 +141,12 @@ def view_all_offences():
     """Displays all recorded offences in a formatted table layout."""
     print("\n--- Recorded Offences ---")
     
+    # Check if the list is empty before printing
     if not offence_records:
         print("No offences recorded during this patrol shift.")
         return
     
-    # Print Table Headers
+    # Print Table Headers (with fixed column widths)
     print(f"{'Driver':<18} {'Licence':<12} {'Limit':<8} {'Speed':<8} {'Over':<8} {'Fine'}")
     print("-" * 65)
     
@@ -162,7 +171,8 @@ def search_offences():
     for record in offence_records:
         if search_query == record['driver'].lower() or search_query == record['licence'].lower():
             matches.append(record)
-            
+    
+    # Display search results if any matches were found       
     if matches:
         print(f"\nFound {len(matches)} matching record(s):")
         print(f"{'Driver':<18} {'Licence':<12} {'Limit':<8} {'Speed':<8} {'Over':<8} {'Fine'}")
@@ -182,10 +192,11 @@ def display_summary():
         print("No offences recorded during this shift.")
         return
     
+    # Calculate total count and total fine revenue
     total_offences = len(offence_records)
     total_fines = sum(record['fine'] for record in offence_records)
     
-    # Calculate Average Speed over Limit
+    # Calculate Average Speed over Limit (rounded to 1 decimal point)
     total_over = sum(record['over'] for record in offence_records)
     avg_over = round(total_over / total_offences, 1)
     
@@ -194,7 +205,8 @@ def display_summary():
     for record in offence_records:
         if record['over'] > highest_record['over']:
             highest_record = record
-            
+    
+    # Display final analytical metrics        
     print(f"Total offences:           {total_offences}")
     print(f"Total fines issued:       ${total_fines:,}")
     print(f"Average speed over limit: {avg_over} km/h")
@@ -222,6 +234,7 @@ def main():
         display_menu()
         choice = input("Select an option (1-5): ").strip()
         
+        # Route user input to the correct function
         if choice == "1":
             record_offence()
         elif choice == "2":
@@ -236,6 +249,6 @@ def main():
         else:
             print("\nInvalid choice. Please select a number between 1 and 5.")
 
-
+# Program entry
 if __name__ == "__main__":
     main()
