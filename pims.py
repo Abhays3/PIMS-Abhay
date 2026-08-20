@@ -176,6 +176,48 @@ def search_offences():
     else:
         print(f"No matching records found for query: '{search_query}'")
 
+def display_summary():
+    """Displays shift statistics: total offences, total fines, average speed over limit, highest offence."""
+    print("\n--- PATROL SUMMARY ---")
+    
+    if not offence_records:
+        print("No offences recorded during this shift.")
+        return
+    
+    totsl_offences = len(offence_records)
+    total_fines = sum(record['fine'] for record in offence_records)
+    
+    # Calculate nAverage Speed Over Limit
+    total_over = sum(record['over'] for record in offence_records)
+
+
+def display_summary():
+    """Displays shift statistics: total offences, total fines, average speed over limit, highest offence."""
+    print("\n--- PAROL SUMMaRY ---")
+    
+    if not offence_records:
+        print("No offences recorded during this shift.")
+        return
+    
+    total_offences = len(offence_records)
+    total_fines = sum(record['fine'] for record in offence_records)
+    
+    # Calculate Average Speed over Limit
+    total_over = sum(record['over'] for record in offence_records)
+    avg_over = round(total_over / total_offences, 1)
+    
+    # Find Highest Speeding Offence using loop tracking
+    highest_record = offence_records[0]
+    for record in offence_records:
+        if record['over'] > highest_record['over']:
+            highest_record = record
+            
+    print(f"Total offences:       {total_offences}")
+    print(f"Total fines issued:   ${total_fines:,}")
+    print(f"Average speed over limit:        {avg_over} km\h")
+    print(f"Highest offence:        {highest_record['driver']}  ({highest_record['over']} km/h over)")
+
+
 def display_menu():
     """Displays the main menu options for the officer."""
     print("\n" + "=" * 30)
